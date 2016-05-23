@@ -5,13 +5,15 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "babel src -d ."
+    "build": "babel src -d .",
+    "watch": "babel -w src -d ."
   },
   "author": "Carroll Yu",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.15.1",
     "express": "^4.13.4",
+    "express-handlebars": "^3.0.0",
     "mongoose": "^4.4.19",
     "superagent": "^2.0.0-alpha.3"
   },

@@ -7,7 +7,6 @@ import request from 'superagent'
 // import * as db from './models'
 const db = require('./models');
 
-
 // 9:20pm sat 5/21/16
 
 const app = express();
@@ -47,7 +46,7 @@ app.get('/api/jobs', function(req, res) {
   db.Job.find({}, function (err, foundJobs) {
     if (err) {
       console.log('foundJobs error: ', err);
-    } 
+    }
     res.json(foundJobs);
   });
 });
@@ -56,7 +55,7 @@ app.get('/api/jobs/:job_id', function(req, res) {
   db.Job.findOne({_id: req.params.job_id}, function (err, foundJob) {
     if (err) {
       console.log('foundJob error: ', err);
-    } 
+    }
     res.json({url: foundJob.url});
   });
 });
@@ -71,7 +70,7 @@ app.post('/api/jobs', function(req, res) {
         }
         else {
           let jobs = [
-                      {id: 1, url: 'www', content: 'POST'}, 
+                      {id: 1, url: 'www', content: 'POST'},
                       {id: 2, url: 'www2', content: 'POST'}
                     ];
 
@@ -117,7 +116,7 @@ app.delete('/api/jobs/:job_id', function(req, res) {
   db.Job.remove({_id: req.params.job_id}, function (err, removedJob) {
     if (err) {
       console.log('removedJob error: ', err);
-    } 
+    }
     res.json(removedJob);
   });
 });
@@ -126,7 +125,7 @@ app.delete('/api/jobs', function(req, res) {
   db.Job.remove({}, function (err, removedJobs) {
     if (err) {
       console.log('removedJobs error: ', err);
-    } 
+    }
     res.json(removedJobs);
   });
 });
