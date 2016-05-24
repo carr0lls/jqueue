@@ -11,9 +11,11 @@ $(document).ready(function() {
 	});
 
 	$('.create').on('click', function() {
+		var data = {url: 'example.com'};
 		$.ajax({
 			url: 'api/jobs',
 			method: 'POST',
+			data: data,
 			success: function(res) {
 				console.log(res);
 			}
@@ -22,7 +24,7 @@ $(document).ready(function() {
 
 	$('.retrieve').on('click', function() {
 		$.ajax({
-			url: 'api/jobs/2',
+			url: 'api/jobs/5743587bb2bc9f4d501d11bf',
 			method: 'GET',
 			success: function(res) {
 				console.log(res);
@@ -32,7 +34,7 @@ $(document).ready(function() {
 
 	$('.update').on('click', function() {
 		$.ajax({
-			url: 'api/jobs/3',
+			url: 'api/jobs/5743587bb2bc9f4d501d11bf',
 			method: 'PUT',
 			success: function(res) {
 				console.log(res);
@@ -42,7 +44,7 @@ $(document).ready(function() {
 
 	$('.delete').on('click', function() {
 		$.ajax({
-			url: 'api/jobs/1',
+			url: 'api/jobs/57435881b2bc9f4d501d11c0',
 			method: 'DELETE',
 			success: function(res) {
 				console.log(res);

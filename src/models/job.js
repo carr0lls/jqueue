@@ -1,11 +1,10 @@
-var mongoose = require("mongoose");
-var Schema = mongoose.Schema;
+import mongoose from 'mongoose'
+const Schema = mongoose.Schema
 
-var JobSchema = new Schema ({
+export const JobSchema = new Schema ({
   url: String,
   date: String,
   content: String
-});
+})
 
-var Job = mongoose.model('Job', JobSchema);
-module.exports = Job;
+export const Job = mongoose.model('Job', JobSchema)
