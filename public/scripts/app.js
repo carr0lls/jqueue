@@ -24,7 +24,7 @@ $(document).ready(function() {
 
 	$('.retrieve').on('click', function() {
 		$.ajax({
-			url: 'api/jobs/5743587bb2bc9f4d501d11bf',
+			url: 'api/jobs/5743f617c83dcd63c6099518',
 			method: 'GET',
 			success: function(res) {
 				console.log(res);
@@ -34,7 +34,7 @@ $(document).ready(function() {
 
 	$('.update').on('click', function() {
 		$.ajax({
-			url: 'api/jobs/5743587bb2bc9f4d501d11bf',
+			url: 'api/jobs/5743f9a218d0e1ddd8f4490b',
 			method: 'PUT',
 			success: function(res) {
 				console.log(res);
@@ -44,7 +44,7 @@ $(document).ready(function() {
 
 	$('.delete').on('click', function() {
 		$.ajax({
-			url: 'api/jobs/57435881b2bc9f4d501d11c0',
+			url: 'api/jobs/5743f984e6df629bd88dc09d',
 			method: 'DELETE',
 			success: function(res) {
 				console.log(res);

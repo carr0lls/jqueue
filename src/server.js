@@ -53,7 +53,7 @@ app.get('/api/jobs', function(req, res) {
 app.get('/api/jobs/:job_id', function(req, res) {
   db.Job.findById({_id: req.params.job_id}, function (err, foundJob) {
     if (foundJob) {
-      res.json({url: foundJob.url, content: foundJob.content})
+      res.json({url: foundJob.url, date: foundJob.date, content: foundJob.content})
     }
     else {
       res.json({error: true, reason: "Failed to retrieve job."})
