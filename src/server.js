@@ -52,11 +52,12 @@ app.get('/api/jobs', function(req, res) {
 
 app.get('/api/jobs/:job_id', function(req, res) {
   db.Job.findById({_id: req.params.job_id}, function (err, foundJob) {
-    if (err) {
-      console.log(err)
-      res.json({error: true, reason: "Failed to find job."})
+    if (foundJob) {
+      res.json({url: foundJob.url, content: foundJob.content})
     }
-    res.json({url: foundJob.url, content: foundJob.content})
+    else {
+      res.json({error: true, reason: "Failed to retrieve job."})
+    }
   })
 })
 
@@ -78,7 +79,7 @@ app.post('/api/jobs', function(req, res) {
 
           newJob.save(function(err, job){
             if (err) {
-              res.json({error: true, reason: "Failed to save new job."})
+              res.json({error: true, reason: "Failed to create new job."})
             }
             res.json({job_id: job.id})
           })
@@ -92,29 +93,33 @@ app.post('/api/jobs', function(req, res) {
 
 app.put('/api/jobs/:job_id', function(req, res) {
   db.Job.findById({_id: req.params.job_id}, function(err, foundJob) {
-    if(err) {
-      console.log(err)
-      res.json({error: true, reason: "Failed to find job."})
+    if (foundJob) {
+      foundJob.url = req.body.url
+      foundJob.date = getTimeString()
+      foundJob.content = "mango melons"
+      foundJob.save(function(err, updatedJob) {
+        if (err) {
+          res.json({error: true, reason: "Failed to update job."})
+        }
+        else {
+          res.json(updatedJob)
+        }
+      })
     }
-    foundJob.url = req.body.url
-    foundJob.date = getTimeString()
-    foundJob.content = "mango melons"
-    foundJob.save(function(err, updatedJob) {
-      if (err) {
-        console.log(err)
-        res.json({error: true, reason: "Failed to update job."})
-      }
-      res.json(updatedJob)
-    })
+    else {
+      res.json({error: true, reason: "Failed to find job to update."})
+    }
   })
 })
 
 app.delete('/api/jobs/:job_id', function(req, res) {
   db.Job.remove({_id: req.params.job_id}, function (err, removedJob) {
-    if (err) {
-      console.log('removedJob error: ', err)
+    if (removedJob) {
+      res.json(removedJob)
     }
-    res.json(removedJob)
+    else {
+      res.json({error: true, reason: "Failed to delete job."})
+    }
   })
 })
 
