@@ -5,27 +5,10 @@ import bodyParser from 'body-parser'
 import exphbr from 'express-handlebars'
 import request from 'superagent'
 import * as db from './models'
-
-// 9:20pm sat 5/21/16
+import { getTimeString } from './helpers'
 
 const app = express()
-
 const handlebars = exphbr.create({extname: '.html'})
-
-function addZero(i) {
-  if (i < 10) {
-      i = "0" + i
-  }
-  return i
-}
-
-function getTimeString() {
-  let d = new Date()
-  let h = addZero(d.getHours())
-  let m = addZero(d.getMinutes())
-  let s = addZero(d.getSeconds())
-  return d.toDateString() + " " + h + ":" + m + ":" + s
-}
 
 app.set('port', (process.env.PORT || 4000))
 app.use('/', express.static(path.join(__dirname, '../public')))
@@ -36,7 +19,6 @@ app.engine('html', handlebars.engine)
 app.set('view engine', 'html')
 app.set('views', path.join(__dirname, '../views'))
 
-// Client-side rendering (only) of comments
 app.get('/', function(req, res) {
   res.render('index')
 })
