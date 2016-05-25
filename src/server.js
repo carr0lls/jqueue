@@ -65,7 +65,7 @@ app.post('/api/jobs', (req, res) => {
             if (err) {
               res.json({error: true, reason: "Failed to create new job."})
             }
-            res.json({job_id: job.id})
+            res.json({_id: job.id})
           })
         }
     })
