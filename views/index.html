@@ -1,17 +1,22 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
-		<script type="text/javascript" src="scripts/app.js"></script>		
+		<script src="scripts/jquery.min.js"></script>
+		<script src="scripts/app.js"></script>
 	</head>
 	<body>
 		<h1>Job Queue</h1>
 		<section>
-			<button class="list">LIST</button>
-			<button class="create">CREATE</button>
-			<button class="retrieve">RETRIEVE</button>
+			<label for="url">URL:</label>
+			<input class="url" name="url" type="text"/>
+			<button class="add">ADD</button>
+			<label for="job_id">Job ID:</label>
+			<input class="job_id" name="job_id" type="text"/>
 			<button class="update">UPDATE</button>
-			<button class="delete">DELETE</button>
+			<button class="delete-all">DELETE ALL</button>
+		</section>
+		<section>
+			<ul class="job-list"></ul>
 		</section>
 	</body>
 </html>

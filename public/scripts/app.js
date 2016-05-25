@@ -1,54 +1,92 @@
+var renderJobs = function() {
+	$.ajax({
+		url: 'api/jobs',
+		method: 'GET',
+		success: function(jobs) {
+			console.log(jobs);
+			jobs.map(function(job) {
+				var del_link = '<button onclick="deleteJob(this)" class="delete" value="'+job._id+'">Delete</button>';
+				var link = '<li><a href="api/jobs/'+job._id+'">'+job._id+'</a>'+del_link+'</li>';
+				$('ul.job-list').append(link);
+			});
+		}
+	});
+};
+
+var deleteJob = function(job) {
+	var job_id = $(job).val();
+	$.ajax({
+		url: 'api/jobs/'+job_id,
+		method: 'DELETE',
+		success: function(res) {
+			console.log(res);
+			$(job).parent().remove();
+		}
+	});
+}
+
 $(document).ready(function() {
 
-	$('.list').on('click', function() {
-		$.ajax({
-			url: 'api/jobs',
-			method: 'GET',
-			success: function(res) {
-				console.log(res);
-			}
-		});
-	});
+	renderJobs();
 
-	$('.create').on('click', function() {
-		var data = {url: 'example.com'};
-		$.ajax({
-			url: 'api/jobs',
-			method: 'POST',
-			data: data,
-			success: function(res) {
-				console.log(res);
-			}
-		});
-	});
-
-	$('.retrieve').on('click', function() {
-		$.ajax({
-			url: 'api/jobs/5743f617c83dcd63c6099518',
-			method: 'GET',
-			success: function(res) {
-				console.log(res);
-			}
-		});
+	$('.add').on('click', function() {
+		var fetchUrl = $('input.url').val();
+		if (fetchUrl) {
+			var data = {url: fetchUrl};
+			$.ajax({
+				url: 'api/jobs',
+				method: 'POST',
+				data: data,
+				success: function(job) {
+					console.log(job);
+					if (job.error) {
+						alert(job.reason);
+					}
+					else {
+						var del_link = '<button onclick="deleteJob(this)" class="delete" value="'+job._id+'">Delete</button>';
+						var link = '<li><a href="api/jobs/'+job._id+'">'+job._id+'</a>'+del_link+'</li>';
+						$('ul.job-list').append(link);
+						$('input.url').val('');
+					}
+				}
+			});
+		}
+		else {
+			alert('Type in a url to add to the job queue.')
+		}
 	});
 
 	$('.update').on('click', function() {
+		var job_id = $('input.job_id').val();
+		if (job_id) {
+			$.ajax({
+				url: 'api/jobs/'+job_id,
+				method: 'PUT',
+				success: function(job) {
+					console.log(job);
+					if (job.error) {
+						alert(job.reason);
+					}
+					else {
+						$('input.job_id').val('');
+					}
+				}
+			});
+		}
+		else {
+			alert('Type in a job id to update.')
+		}
+	});
+
+	$('.delete-all').on('click', function() {
 		$.ajax({
-			url: 'api/jobs/5743f9a218d0e1ddd8f4490b',
-			method: 'PUT',
+			url: 'api/jobs',
+			method: 'DELETE',
 			success: function(res) {
 				console.log(res);
+				$('ul.job-list').empty();
 			}
 		});
 	});
 
-	$('.delete').on('click', function() {
-		$.ajax({
-			url: 'api/jobs/5743f984e6df629bd88dc09d',
-			method: 'DELETE',
-			success: function(res) {
-				console.log(res);
-			}
-		});
-	});
 });
