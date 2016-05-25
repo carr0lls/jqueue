@@ -19,21 +19,23 @@ app.engine('html', handlebars.engine)
 app.set('view engine', 'html')
 app.set('views', path.join(__dirname, '../views'))
 
-app.get('/', function(req, res) {
+app.get('/', (req, res) => {
   res.render('index')
 })
 
-app.get('/api/jobs', function(req, res) {
-  db.Job.find({}, function (err, foundJobs) {
+app.get('/api/jobs', (req, res) => {
+  db.Job.find({}, (err, foundJobs) => {
     if (err) {
-      console.log('foundJobs error: ', err)
+      res.json({error: true, reason: err})
     }
-    res.json(foundJobs)
+    else {
+      res.json(foundJobs)
+    }
   })
 })
 
-app.get('/api/jobs/:job_id', function(req, res) {
-  db.Job.findById({_id: req.params.job_id}, function (err, foundJob) {
+app.get('/api/jobs/:job_id', (req, res) => {
+  db.Job.findById(req.params.job_id, (err, foundJob) => {
     if (foundJob) {
       res.json({url: foundJob.url, date: foundJob.date, content: foundJob.content})
     }
@@ -43,11 +45,11 @@ app.get('/api/jobs/:job_id', function(req, res) {
   })
 })
 
-app.post('/api/jobs', function(req, res) {
+app.post('/api/jobs', (req, res) => {
   if (req.body.url) {
     request
       .get(req.body.url)
-      .end(function(err, result) {
+      .end((err, result) => {
         if (err) {
           let errorMsg = err.reason ? err.reason : err.code
           res.json({error: true, reason: errorMsg})
@@ -59,7 +61,7 @@ app.post('/api/jobs', function(req, res) {
             content: result.text
           })
 
-          newJob.save(function(err, job){
+          newJob.save((err, job) => {
             if (err) {
               res.json({error: true, reason: "Failed to create new job."})
             }
@@ -73,20 +75,31 @@ app.post('/api/jobs', function(req, res) {
   }
 })
 
-app.put('/api/jobs/:job_id', function(req, res) {
-  db.Job.findById({_id: req.params.job_id}, function(err, foundJob) {
+app.put('/api/jobs/:job_id', (req, res) => {
+  db.Job.findById(req.params.job_id, (err, foundJob) => {
     if (foundJob) {
-      foundJob.url = req.body.url
-      foundJob.date = getTimeString()
-      foundJob.content = "mango melons"
-      foundJob.save(function(err, updatedJob) {
-        if (err) {
-          res.json({error: true, reason: "Failed to update job."})
-        }
-        else {
-          res.json(updatedJob)
-        }
-      })
+      let requestUrl = req.body.url ? req.body.url : foundJob.url
+      request
+        .get(requestUrl)
+        .end((err, result) => {
+          if (err) {
+            let errorMsg = err.reason ? err.reason : err.code
+            res.json({error: true, reason: errorMsg})
+          }
+          else {
+            foundJob.url = requestUrl
+            foundJob.date = getTimeString()
+            foundJob.content = result.text
+            foundJob.save((err, updatedJob) => {
+              if (err) {
+                res.json({error: true, reason: "Failed to update job."})
+              }
+              else {
+                res.json(updatedJob)
+              }
+            })
+          }
+        })
     }
     else {
       res.json({error: true, reason: "Failed to find job to update."})
@@ -94,10 +107,10 @@ app.put('/api/jobs/:job_id', function(req, res) {
   })
 })
 
-app.delete('/api/jobs/:job_id', function(req, res) {
-  db.Job.remove({_id: req.params.job_id}, function (err, removedJob) {
+app.delete('/api/jobs/:job_id', (req, res) => {
+  db.Job.findByIdAndRemove(req.params.job_id, (err, removedJob) => {
     if (removedJob) {
-      res.json(removedJob)
+      res.json({success: true})
     }
     else {
       res.json({error: true, reason: "Failed to delete job."})
@@ -105,15 +118,17 @@ app.delete('/api/jobs/:job_id', function(req, res) {
   })
 })
 
-app.delete('/api/jobs', function(req, res) {
-  db.Job.remove({}, function (err, removedJobs) {
+app.delete('/api/jobs', (req, res) => {
+  db.Job.remove({}, (err, removedJobs) => {
     if (err) {
-      console.log('removedJobs error: ', err)
+      res.json({error: true, reason: err})
     }
-    res.json(removedJobs)
+    else {
+      res.json(removedJobs)
+    }
   })
 })
 
-app.listen(app.get('port'), function() {
+app.listen(app.get('port'), () => {
   console.log('Server started: http://localhost:' + app.get('port') + '/')
 })

@@ -1,11 +1,11 @@
-function addZero(i) {
+const addZero = i => {
   if (i < 10) {
       i = "0" + i
   }
   return i
 }
 
-export const getTimeString = function() {
+export const getTimeString = () => {
   let d = new Date()
   let h = addZero(d.getHours())
   let m = addZero(d.getMinutes())
