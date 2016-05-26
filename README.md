@@ -51,8 +51,8 @@ DELETE /api/jobs/:job_id
 DELETE /api/jobs
 ```
 
-### Tests
+## Tests
 ```sh
 # Run tests
-npm run tests
+npm test
 ```
