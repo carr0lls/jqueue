@@ -17,10 +17,12 @@ app.engine('html', handlebars.engine)
 app.set('view engine', 'html')
 app.set('views', path.join(__dirname, '../views'))
 
+// Maing page UI
 app.get('/', (req, res) => {
   res.render('index')
 })
-
+// API routes
+app.get('/api', controllers.Api.index)
 app.get('/api/jobs', controllers.Job.index)
 app.get('/api/jobs/:job_id', controllers.Job.show)
 app.post('/api/jobs', controllers.Job.create)
