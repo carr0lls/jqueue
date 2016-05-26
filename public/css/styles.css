@@ -1,0 +1,23 @@
+body {
+  font-family: sans-serif;
+}
+h1 {
+  font-family: 'Raleway', sans-serif;
+}
+a {
+  color: #00BCE2;
+  text-decoration: none;
+}
+a:hover {
+  color: #a185dd;
+}
+.job-list {
+  width: 300px;
+}
+.job-list li {
+  margin: 5px 0;
+}
+.job-list button {
+  float: right;
+  margin: 0 5px;
+}

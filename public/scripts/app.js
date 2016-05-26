@@ -44,10 +44,11 @@ $(document).ready(function() {
 
 	renderJobs();
 
-	$('.add').on('click', function() {
+	$('#add-form').on('submit', function(e) {
+		e.preventDefault();
 		var fetchUrl = $('input.url').val();
 		if (fetchUrl) {
-			var data = {url: fetchUrl};
+			var data = $(this).serializeArray();
 			$.ajax({
 				url: 'api/jobs',
 				method: 'POST',
