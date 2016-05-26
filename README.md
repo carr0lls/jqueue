@@ -26,29 +26,29 @@ And visit <http://localhost:4000/>.
 
 ## Routes
 ```sh
-# GET /
-A simple user interface that uses all API endpoints.
+# A simple user interface that uses all API endpoints.
+GET /
 
-# GET /api
-Describes available endpoints.
+# Describes available endpoints.
+GET /api
 
-# GET api/jobs
-List all jobs.
+# List all jobs.
+GET /api/jobs
 
-# GET api/jobs/:job_id
-View data of a specific job.
+# View data of a specific job.
+GET /api/jobs/:job_id
 
-# POST api/jobs
-Add a new job to the job queue.
+# Add a new job to the job queue.
+POST /api/jobs
 
-# PUT api/jobs/:job_id
-Edit and update an existing job.
+# Edit and update an existing job.
+PUT /api/jobs/:job_id
 
-# DELETE api/jobs/:job_id
-Delete an existing job.
+# Delete an existing job.
+DELETE /api/jobs/:job_id
 
-# DELETE api/jobs
-Delete all existing jobs.
+# Delete all existing jobs.
+DELETE /api/jobs
 ```
 
 ### Tests
