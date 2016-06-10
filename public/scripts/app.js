@@ -59,9 +59,9 @@ $(document).ready(function() {
 						alert(job.reason);
 					}
 					else {
-						var refresh_link = '<button onclick="updateJob(this)" class="update" value="'+job._id+'">Refresh</button>';
-						var del_link = '<button onclick="deleteJob(this)" class="delete" value="'+job._id+'">Delete</button>';
-						var link = '<li><a href="api/jobs/'+job._id+'">'+job.url+'</a>'+refresh_link+del_link+'</li>';
+						var refresh_link = '<button onclick="updateJob(this)" class="update" value="'+job.job_id+'">Refresh</button>';
+						var del_link = '<button onclick="deleteJob(this)" class="delete" value="'+job.job_id+'">Delete</button>';
+						var link = '<li><a href="api/jobs/'+job.job_id+'">'+job.url+'</a>'+refresh_link+del_link+'</li>';
 						$('ul.job-list').append(link);
 						$('input.url').val('');
 					}

@@ -17,6 +17,7 @@
     "express-handlebars": "^3.0.0",
     "mongoose": "^4.4.19",
     "rsmq": "^0.7.0",
+    "rsmq-worker": "^0.4.2",
     "superagent": "^2.0.0-alpha.3"
   },
   "devDependencies": {
