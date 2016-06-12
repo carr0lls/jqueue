@@ -1,3 +1,3 @@
-module.exports.JobQueue = {
-  QUEUE_NAME: 'jobQueue'
+module.exports = {
+  JOBQUEUE_NAME: 'jobQueue'
 }

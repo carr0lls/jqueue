@@ -1,17 +1,20 @@
 import rsmq from 'rsmq'
+import request from 'superagent'
+import * as db from '../models'
 import * as Constants from '../constants'
+import { getTimeString } from './Utils'
 
 const jobQueue = new rsmq({host: '127.0.0.1', port: 6379, ns: 'rsmq'})
-const qname = Constants.JobQueue.QUEUE_NAME
+const qname = Constants.JOBQUEUE_NAME
 
-const createQueue = () => {
+const createJobQueue = () => {
   jobQueue.createQueue({qname}, (err, resp) => {
     if (resp === 1) {
       console.log("jobQueue created")
     }
   })
 }
-const destroyQueue = () => {
+const destroyJobQueue = () => {
   jobQueue.deleteQueue({qname}, (err, resp) => {
     if (resp === 1) {
       console.log("jobQueue deleted")
@@ -19,8 +22,55 @@ const destroyQueue = () => {
   })
 }
 
-module.exports.JobQueue = {
+// Job worker
+var RSMQWorker = require('rsmq-worker');
+var worker = new RSMQWorker(qname, {
+  interval: [ 5 ],
+  autostart: true
+});
+
+// listen to messages
+worker.on('message', (message, next, id) => {
+  console.log('Job:', message, id)
+  db.Job.findOne({qid: id}, (err, foundJob) => {
+    if (foundJob) {
+      let requestUrl = foundJob.url
+      request
+        .get(requestUrl)
+        .end((err, result) => {
+          if (err) {
+            foundJob.status = 'FAILED'
+            foundJob.last_updated = getTimeString()
+            let errorMsg = err.reason ? err.reason : err.code
+            console.log("Failed to fetch data for "+id)
+            console.log({error: true, reason: errorMsg})
+          }
+          else {
+            foundJob.status = 'COMPLETED'
+            foundJob.last_updated = getTimeString()
+            foundJob.content = result.text
+            console.log("Completed fetching data for "+id)
+          }
+          foundJob.save((err, updatedJob) => {
+            if (err) {
+              console.error({error: true, reason: "Failed to update job data"})
+            }
+            jobQueue.deleteMessage({qname, id}, (err, resp) => {
+              if (resp === 1) {
+                console.log("Removed job "+id+" from jobQueue\n")
+              }
+            })
+          })
+        })
+    }
+    else {
+      console.error({error: true, reason: "Failed to find job to update."})
+    }
+  })
+});
+
+module.exports = {
   jobQueue: jobQueue,
-  createQueue: createQueue,
-  destroyQueue: destroyQueue
+  createJobQueue: createJobQueue,
+  destroyJobQueue: destroyJobQueue
 }

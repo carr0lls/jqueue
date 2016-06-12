@@ -1,14 +1,12 @@
-import request from 'superagent'
 import * as db from '../models'
 import * as Constants from '../constants'
-import { JobQueue, getTimeString } from '../helpers'
+import { jobQueue, createJobQueue, destroyJobQueue } from '../helpers'
 
-const qname = Constants.JobQueue.QUEUE_NAME
-// console.log(jobQueue)
-// JobQueue.jobQueue.createQueue()
+const qname = Constants.JOBQUEUE_NAME
+createJobQueue()
 
 const index = (req, res) => {
-  // JobQueue.jobQueue.getQueueAttributes({qname}, (err, resp) => {
+  // jobQueue.getQueueAttributes({qname}, (err, resp) => {
   //   if (err) {
   //     res.send(err, 500);
   //     return;
@@ -43,7 +41,7 @@ const create = (req, res) => {
       message: req.body.url
     }
 
-    JobQueue.jobQueue.sendMessage(data, (err, qid) => {
+    jobQueue.sendMessage(data, (err, qid) => {
       if (err) {
         res.status(500).send(err);
         return;
@@ -66,39 +64,6 @@ const create = (req, res) => {
   else {
     res.json({error: true, reason: "Fetch url is required."})
   }
-
-  // if (req.body.url) {
-  //   request
-  //     .get(req.body.url)
-  //     .end((err, result) => {
-  //       if (err) {
-  //         let errorMsg = err.reason ? err.reason : err.status
-  //         if (!errorMsg)
-  //           errorMsg = 'The url specified is invalid.'
-  //
-  //         res.json({error: true, reason: errorMsg})
-  //       }
-  //       else {
-  //         let newJob = new db.Job ({
-  //           url: req.body.url,
-  //           created: getTimeString(),
-  //           content: result.text
-  //         })
-  //
-  //         newJob.save((err, job) => {
-  //           if (err) {
-  //             res.json({error: true, reason: "Failed to create new job."})
-  //           }
-  //           else {
-  //             res.json({_id: job.id, url: job.url})
-  //           }
-  //         })
-  //       }
-  //   })
-  // }
-  // else {
-  //   res.json({ error: true, reason: "Fetch url is required."})
-  // }
 }
 
 const update = (req, res) => {
@@ -136,7 +101,7 @@ const update = (req, res) => {
 const destroy = (req, res) => {
   db.Job.findByIdAndRemove(req.params.job_id, (err, removedJob) => {
     if (removedJob) {
-      JobQueue.jobQueue.deleteMessage({qname, id: removedJob.qid}, (err, resp) => {
+      jobQueue.deleteMessage({qname, id: removedJob.qid}, (err, resp) => {
         if (resp === 1) {
           console.log("message deleted from jobQueue")
         }
@@ -150,8 +115,8 @@ const destroy = (req, res) => {
 }
 
 const empty = (req, res) => {
-  // JobQueue.jobQueue.destroyQueue()
-  // JobQueue.jobQueue.createQueue()
+  destroyJobQueue()
+  createJobQueue()
   db.Job.remove({}, (err, removedJobs) => {
     if (err) {
       res.json({error: true, reason: err})

@@ -1,2 +1,2 @@
 export { getTimeString } from './Utils'
-export { JobQueue } from './JobQueue'
+export { jobQueue, createJobQueue, destroyJobQueue } from './JobQueue'
