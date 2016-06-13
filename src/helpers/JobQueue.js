@@ -1,12 +1,16 @@
-import rsmq from 'rsmq'
+import RSMQ from 'rsmq'
 import request from 'superagent'
+import RSMQWorker from 'rsmq-worker'
 import * as db from '../models'
 import { Constants } from '../constants'
 import { getTimeString } from './Utils'
-
-export const jobQueue = new rsmq({host: '127.0.0.1', port: 6379, ns: 'rsmq'})
 const qname = Constants.JOBQUEUE_NAME
 
+export const jobQueue = new RSMQ({
+  host: '127.0.0.1',
+  port: 6379,
+  ns: 'rsmq'
+})
 export const createJobQueue = () => {
   jobQueue.createQueue({qname}, (err, resp) => {
     if (resp === 1) {
@@ -23,8 +27,7 @@ export const destroyJobQueue = () => {
 }
 
 // Job worker
-var RSMQWorker = require('rsmq-worker');
-var worker = new RSMQWorker(qname, {
+const worker = new RSMQWorker(qname, {
   interval: [ 5 ],
   autostart: true
 });
