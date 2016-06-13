@@ -7,8 +7,8 @@ import { getTimeString } from './Utils'
 const qname = Constants.JOBQUEUE_NAME
 
 export const jobQueue = new RSMQ({
-  host: '127.0.0.1',
-  port: 6379,
+  host: Constants.JOBQUEUE_HOST,
+  port: Constants.JOBQUEUE_PORT,
   ns: 'rsmq'
 })
 export const createJobQueue = () => {
@@ -31,9 +31,9 @@ createJobQueue()
 
 // Job worker
 const worker = new RSMQWorker(qname, {
-  interval: [ 5 ],
+  interval: Constants.JOBQUEUE_INTERVAL,
   autostart: true
-});
+})
 
 // listen to messages
 worker.on('message', (message, next, id) => {
@@ -45,14 +45,14 @@ worker.on('message', (message, next, id) => {
         .get(requestUrl)
         .end((err, result) => {
           if (err) {
-            foundJob.status = 'FAILED'
+            foundJob.status = Constants.JOBQUEUE_FAIL_STATUS
             foundJob.last_updated = getTimeString()
             let errorMsg = err.reason ? err.reason : err.code
             console.log("Failed to fetch data for "+id)
             console.log({error: true, reason: errorMsg})
           }
           else {
-            foundJob.status = 'COMPLETED'
+            foundJob.status = Constants.JOBQUEUE_COMPLETE_STATUS
             foundJob.last_updated = getTimeString()
             foundJob.content = result.text
             console.log("Completed fetching data for "+id)
@@ -73,4 +73,4 @@ worker.on('message', (message, next, id) => {
       console.error({error: true, reason: "Failed to find job to update."})
     }
   })
-});
+})

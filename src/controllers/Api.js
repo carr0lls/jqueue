@@ -13,7 +13,7 @@ const index = (req, res) => {
       {method: 'DELETE', path: '/api/jobs/:job_id', description: 'Delete an existing job.'},
       {method: 'DELETE', path: '/api/jobs', description: 'Delete all existing jobs.'}
     ]
-  });
+  })
 }
 
 export const Api = {
