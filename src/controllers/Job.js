@@ -1,18 +1,9 @@
 import * as db from '../models'
 import { Constants } from '../constants'
 import { jobQueue, createJobQueue, destroyJobQueue } from '../helpers'
-
 const qname = Constants.JOBQUEUE_NAME
-createJobQueue()
 
 const index = (req, res) => {
-  // jobQueue.getQueueAttributes({qname}, (err, resp) => {
-  //   if (err) {
-  //     res.status(500).send(err)
-  //     return;
-  //   }
-  //   res.json(resp)
-  // })
   db.Job.find({}, (err, foundJobs) => {
     if (err) {
       res.json({error: true, reason: err})
@@ -67,6 +58,14 @@ const create = (req, res) => {
 }
 
 const update = (req, res) => {
+  // jobQueue.getQueueAttributes({qname}, (err, resp) => {
+  //   if (err) {
+  //     res.status(500).send(err)
+  //     return;
+  //   }
+  //   res.json(resp)
+  // })
+
   // db.Job.findById(req.params.job_id, (err, foundJob) => {
   //   if (foundJob) {
   //     let requestUrl = req.body.url ? req.body.url : foundJob.url

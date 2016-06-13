@@ -26,6 +26,9 @@ export const destroyJobQueue = () => {
   })
 }
 
+// Start job queue
+createJobQueue()
+
 // Job worker
 const worker = new RSMQWorker(qname, {
   interval: [ 5 ],

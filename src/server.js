@@ -17,7 +17,7 @@ app.engine('html', handlebars.engine)
 app.set('view engine', 'html')
 app.set('views', path.join(__dirname, '../views'))
 
-// Maing page UI
+// Main page UI
 app.get('/', (req, res) => {
   res.render('index')
 })
