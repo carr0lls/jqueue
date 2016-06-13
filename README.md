@@ -1,9 +1,10 @@
 # Job Queue
 
-A simple RESTful API for retrieving and storing data from a specified URL.
+A simple job queue with a RESTful API for retrieving and storing data from a specified URL.
 
 ## Prerequisites
-```sh
+```
+redis
 mongodb
 ```
 
@@ -25,7 +26,7 @@ npm start
 And visit <http://localhost:4000/>.
 
 ## Routes
-```sh
+```
 # A simple user interface that uses all API endpoints.
 GET /
 
@@ -40,9 +41,17 @@ GET /api/jobs/:job_id
 
 # Add a new job to the job queue.
 POST /api/jobs
+Params:
+{
+  url: String (Required)
+}
 
 # Edit and update an existing job.
 PUT /api/jobs/:job_id
+Params:
+{
+  url: String (Optional)
+}
 
 # Delete an existing job.
 DELETE /api/jobs/:job_id
@@ -56,3 +65,6 @@ DELETE /api/jobs
 # Run tests
 npm test
 ```
+
+## Todo (Future enhancements)
+- Implement frontend UI with React

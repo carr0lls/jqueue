@@ -18,12 +18,12 @@ const show = (req, res) => {
   db.Job.findById(req.params.job_id, (err, foundJob) => {
     if (foundJob) {
       res.json({
-                status: foundJob.status,
-                url: foundJob.url,
-                created: foundJob.created,
-                content: foundJob.content,
-                last_updated: foundJob.last_updated
-              })
+        status: foundJob.status,
+        url: foundJob.url,
+        created: foundJob.created,
+        content: foundJob.content,
+        last_updated: foundJob.last_updated
+      })
     }
     else {
       res.json({error: true, reason: "Failed to retrieve job."})
