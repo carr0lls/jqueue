@@ -1,4 +1,3 @@
-
 const index = (req, res) => {
   res.json({
     name: 'Job Queue',
@@ -17,6 +16,6 @@ const index = (req, res) => {
   });
 }
 
-module.exports.Api = {
-  index: index
+export const Api = {
+  index
 }

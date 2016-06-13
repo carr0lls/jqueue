@@ -1,20 +1,20 @@
 import rsmq from 'rsmq'
 import request from 'superagent'
 import * as db from '../models'
-import * as Constants from '../constants'
+import { Constants } from '../constants'
 import { getTimeString } from './Utils'
 
-const jobQueue = new rsmq({host: '127.0.0.1', port: 6379, ns: 'rsmq'})
+export const jobQueue = new rsmq({host: '127.0.0.1', port: 6379, ns: 'rsmq'})
 const qname = Constants.JOBQUEUE_NAME
 
-const createJobQueue = () => {
+export const createJobQueue = () => {
   jobQueue.createQueue({qname}, (err, resp) => {
     if (resp === 1) {
       console.log("jobQueue created")
     }
   })
 }
-const destroyJobQueue = () => {
+export const destroyJobQueue = () => {
   jobQueue.deleteQueue({qname}, (err, resp) => {
     if (resp === 1) {
       console.log("jobQueue deleted")
@@ -68,9 +68,3 @@ worker.on('message', (message, next, id) => {
     }
   })
 });
-
-module.exports = {
-  jobQueue: jobQueue,
-  createJobQueue: createJobQueue,
-  destroyJobQueue: destroyJobQueue
-}

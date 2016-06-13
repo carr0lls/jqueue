@@ -1,5 +1,5 @@
 import * as db from '../models'
-import * as Constants from '../constants'
+import { Constants } from '../constants'
 import { jobQueue, createJobQueue, destroyJobQueue } from '../helpers'
 
 const qname = Constants.JOBQUEUE_NAME
@@ -8,7 +8,7 @@ createJobQueue()
 const index = (req, res) => {
   // jobQueue.getQueueAttributes({qname}, (err, resp) => {
   //   if (err) {
-  //     res.send(err, 500);
+  //     res.status(500).send(err)
   //     return;
   //   }
   //   res.json(resp)
@@ -127,11 +127,11 @@ const empty = (req, res) => {
   })
 }
 
-module.exports.Job = {
-  index: index,
-  show: show,
-  create: create,
-  update: update,
-  destroy: destroy,
-  empty: empty
+export const Job = {
+  index,
+  show,
+  create,
+  update,
+  destroy,
+  empty
 }
