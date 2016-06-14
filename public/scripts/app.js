@@ -4,12 +4,14 @@ var renderJobs = function() {
 		method: 'GET',
 		success: function(jobs) {
 			// console.log(jobs);
+			var links = '';
 			jobs.map(function(job) {
 				var refresh_link = '<button onclick="updateJob(this)" class="update" value="'+job._id+'">Refresh</button>';
 				var del_link = '<button onclick="deleteJob(this)" class="delete" value="'+job._id+'">Delete</button>';
 				var link = '<li><a href="api/jobs/'+job._id+'">'+job.url+'</a>'+refresh_link+del_link+'</li>';
-				$('ul.job-list').append(link);
+				links += link;
 			});
+			$('ul.job-list').empty().append(links);
 		}
 	});
 };
@@ -21,7 +23,7 @@ var deleteJob = function(job) {
 		method: 'DELETE',
 		success: function(res) {
 			// console.log(res);
-			$(job).parent().remove();
+			renderJobs();
 		}
 	});
 };
@@ -59,10 +61,7 @@ $(document).ready(function() {
 						alert(job.reason);
 					}
 					else {
-						var refresh_link = '<button onclick="updateJob(this)" class="update" value="'+job.job_id+'">Refresh</button>';
-						var del_link = '<button onclick="deleteJob(this)" class="delete" value="'+job.job_id+'">Delete</button>';
-						var link = '<li><a href="api/jobs/'+job.job_id+'">'+job.url+'</a>'+refresh_link+del_link+'</li>';
-						$('ul.job-list').append(link);
+						renderJobs();
 						$('input.url').val('');
 					}
 				}
@@ -79,7 +78,7 @@ $(document).ready(function() {
 			method: 'DELETE',
 			success: function(res) {
 				// console.log(res);
-				$('ul.job-list').empty();
+				renderJobs();
 			}
 		});
 	});

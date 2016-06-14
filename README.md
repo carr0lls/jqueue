@@ -4,8 +4,8 @@ A simple job queue with a RESTful API for retrieving and storing data from a spe
 
 ## Prerequisites
 ```
-redis
-mongodb
+Redis (http://redis.io/)
+MongoDB (https://www.mongodb.com/)
 ```
 
 ## To run
@@ -72,4 +72,4 @@ npm test
 ```
 
 ## Todo (Future enhancements)
-- Implement frontend UI with React
+- Rewrite frontend UI with React
