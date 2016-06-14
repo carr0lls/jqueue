@@ -40,27 +40,30 @@ View data of a specific job.
 
 ### `POST` /api/jobs
 Add a new job to the job queue.
-```
-Params:
+Required parameters:
+```json
 {
-  url: String (Required)
+  "url": "String"
 }
 ```
 
 ### `PUT` /api/jobs/:job_id
 Edit and update an existing job.
-```
-Params:
+This endpoint will re-add the job to the queue to re-fetch the web data. If a url is given, it will refetch data with the new url instead of the original.
+Optional parameters:
+```json
 {
-  url: String (Optional)
+  "url": "String"
 }
 ```
 
 ### `DELETE` /api/jobs/:job_id
 Delete an existing job.
+The job gets deleted from the database as well as the queue.
 
 ### `DELETE` /api/jobs
 Delete all existing jobs.
+All jobs from the database and the job queue will be deleted.
 
 ## Tests
 ```sh
