@@ -26,39 +26,41 @@ npm start
 And visit <http://localhost:4000/>.
 
 ## Routes
+### `GET` /
+A simple user interface that utilizes all of the API endpoints.
+
+### `GET` /api
+Describes all available API endpoints.
+
+### `GET` /api/jobs
+List all jobs.
+
+### `GET` /api/jobs/:job_id
+View data of a specific job.
+
+### `POST` /api/jobs
+Add a new job to the job queue.
 ```
-# A simple user interface that uses all API endpoints.
-GET /
-
-# Describes available endpoints.
-GET /api
-
-# List all jobs.
-GET /api/jobs
-
-# View data of a specific job.
-GET /api/jobs/:job_id
-
-# Add a new job to the job queue.
-POST /api/jobs
 Params:
 {
   url: String (Required)
 }
+```
 
-# Edit and update an existing job.
-PUT /api/jobs/:job_id
+### `PUT` /api/jobs/:job_id
+Edit and update an existing job.
+```
 Params:
 {
   url: String (Optional)
 }
-
-# Delete an existing job.
-DELETE /api/jobs/:job_id
-
-# Delete all existing jobs.
-DELETE /api/jobs
 ```
+
+### `DELETE` /api/jobs/:job_id
+Delete an existing job.
+
+### `DELETE` /api/jobs
+Delete all existing jobs.
 
 ## Tests
 ```sh
