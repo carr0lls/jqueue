@@ -48,8 +48,10 @@ Required parameters:
 ```
 
 ### `PUT` /api/jobs/:job_id
-Edit and update an existing job.
-This endpoint will re-add the job to the queue to re-fetch the web data. If a url is given, it will refetch data with the new url instead of the original.
+Edit and update an existing job
+(This endpoint will re-add the job to the queue to re-fetch the web data.
+  If a url is given, it will refetch data with the new url instead of the original).
+
 Optional parameters:
 ```json
 {
@@ -58,12 +60,10 @@ Optional parameters:
 ```
 
 ### `DELETE` /api/jobs/:job_id
-Delete an existing job.
-The job gets deleted from the database as well as the queue.
+Delete an existing job (the job is deleted from the database and the job queue).
 
 ### `DELETE` /api/jobs
-Delete all existing jobs.
-All jobs from the database and the job queue will be deleted.
+Delete all existing jobs (all jobs from the database and the job queue is deleted).
 
 ## Tests
 ```sh
