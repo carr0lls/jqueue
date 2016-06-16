@@ -41,7 +41,8 @@ const create = (req, res) => {
 
       let newJob = new db.Job ({
         qid,
-        url: req.body.url
+        url: req.body.url,
+        created: getTimeString()
       })
       newJob.save((err, job) => {
         if (err)
