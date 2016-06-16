@@ -35,8 +35,11 @@ var updateJob = function(job) {
 		method: 'PUT',
 		success: function(job) {
 			// console.log(job);
-			if (job.error) {
-				alert(job.error.desc);
+		},
+		error: function(err) {
+			// console.log(err);
+			if (err.responseJSON.error) {
+				alert(err.responseJSON.error.desc);
 			}
 		}
 	});
@@ -57,12 +60,13 @@ $(document).ready(function() {
 				data: data,
 				success: function(job) {
 					// console.log(job);
-					if (job.error) {
-						alert(job.error.desc);
-					}
-					else {
-						renderJobs();
-						$('input.url').val('');
+					renderJobs();
+					$('input.url').val('');
+				},
+				error: function(err) {
+					// console.log(err);
+					if (err.responseJSON.error) {
+						alert(err.responseJSON.error.desc);
 					}
 				}
 			});
