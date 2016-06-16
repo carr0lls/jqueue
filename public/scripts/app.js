@@ -36,7 +36,7 @@ var updateJob = function(job) {
 		success: function(job) {
 			// console.log(job);
 			if (job.error) {
-				alert(job.error.reason);
+				alert(job.error.desc);
 			}
 		}
 	});
@@ -58,7 +58,7 @@ $(document).ready(function() {
 				success: function(job) {
 					// console.log(job);
 					if (job.error) {
-						alert(job.error.reason);
+						alert(job.error.desc);
 					}
 					else {
 						renderJobs();
