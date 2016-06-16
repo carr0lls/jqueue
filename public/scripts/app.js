@@ -8,7 +8,7 @@ var renderJobs = function() {
 			jobs.map(function(job) {
 				var refresh_link = '<button onclick="updateJob(this)" class="update" value="'+job._id+'">Refresh</button>';
 				var del_link = '<button onclick="deleteJob(this)" class="delete" value="'+job._id+'">Delete</button>';
-				var link = '<li><a href="api/jobs/'+job._id+'">'+job.url+'</a>'+refresh_link+del_link+'</li>';
+				var link = '<li><a href="api/jobs/'+job._id+'">'+job.url+'</a>'+del_link+refresh_link+'</li>';
 				links += link;
 			});
 			$('ul.job-list').empty().append(links);
@@ -36,7 +36,7 @@ var updateJob = function(job) {
 		success: function(job) {
 			// console.log(job);
 			if (job.error) {
-				alert(job.reason);
+				alert(job.error.reason);
 			}
 		}
 	});
@@ -58,7 +58,7 @@ $(document).ready(function() {
 				success: function(job) {
 					// console.log(job);
 					if (job.error) {
-						alert(job.reason);
+						alert(job.error.reason);
 					}
 					else {
 						renderJobs();

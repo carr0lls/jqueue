@@ -49,7 +49,7 @@ worker.on('message', (message, next, id) => {
             foundJob.last_updated = getTimeString()
             let errorMsg = err.reason ? err.reason : err.code
             console.log("Failed to fetch data for "+id)
-            console.log({error: true, reason: errorMsg})
+            console.log({error: {reason: err, desc: errorMsg}})
           }
           else {
             foundJob.status = Constants.JOBQUEUE_COMPLETE_STATUS
@@ -59,7 +59,7 @@ worker.on('message', (message, next, id) => {
           }
           foundJob.save((err, updatedJob) => {
             if (err) {
-              console.error({error: true, reason: "Failed to update job data"})
+              console.error({error: {reason: err, desc: "Failed to update job data"}})
             }
             jobQueue.deleteMessage({qname, id}, (err, resp) => {
               if (resp === 1) {
@@ -70,7 +70,7 @@ worker.on('message', (message, next, id) => {
         })
     }
     else {
-      console.error({error: true, reason: "Failed to find job to update."})
+      console.error({error: {desc: "Failed to locate job to update."}})
     }
   })
 })

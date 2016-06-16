@@ -3,10 +3,8 @@
 A simple job queue with a RESTful API for retrieving and storing data from a specified URL.
 
 ## Prerequisites
-```
-Redis (http://redis.io/)
-MongoDB (https://www.mongodb.com/)
-```
+- [Redis](http://redis.io/)
+- [MongoDB](https://www.mongodb.com/)
 
 ## To run
 
@@ -40,6 +38,7 @@ View data of a specific job.
 
 ### `POST` /api/jobs
 Add a new job to the job queue.
+
 Required parameters:
 ```json
 {
@@ -71,5 +70,5 @@ Delete all existing jobs (all jobs from the database and the job queue is delete
 npm test
 ```
 
-## Todo (Future enhancements)
+## Todo (future enhancements)
 - Rewrite frontend UI with React
