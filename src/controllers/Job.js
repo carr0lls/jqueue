@@ -1,12 +1,14 @@
 import * as db from '../models'
 import { Constants } from '../constants'
-import { getTimeString, jobQueue, createJobQueue, destroyJobQueue } from '../helpers'
+import { getTimeString, JobQueue } from '../helpers'
 const qname = Constants.JOBQUEUE_NAME
+
+// Start Job queue
+JobQueue.init()
 
 const index = (req, res) => {
   db.Job.find({}, (err, foundJobs) => {
-    if (err)
-      return res.status(500).json({error: {reason: err}})
+    if (err) return errorHandler(err, res)
 
     res.json(foundJobs)
   })
@@ -14,115 +16,112 @@ const index = (req, res) => {
 
 const show = (req, res) => {
   db.Job.findById(req.params.job_id, (err, foundJob) => {
-    if (err)
-      return res.status(500).json({error: {reason: err, desc: "Failed to match job id."}})
+    if (err) return errorHandler(err, res)
 
-    if (foundJob) {
-      res.json({
-        status: foundJob.status,
-        url: foundJob.url,
-        created: foundJob.created,
-        content: foundJob.content,
-        last_updated: foundJob.last_updated
-      })
-    }
+    if (!foundJob)
+      return res.status(400).json({error: {desc: "Job does not exist in database."}})
+
+    res.json({
+      status: foundJob.status,
+      url: foundJob.url,
+      created: foundJob.created,
+      content: foundJob.content,
+      last_updated: foundJob.last_updated
+    })
   })
 }
 
 const create = (req, res) => {
-  if (req.body.url) {
-    let data = {
-      qname,
-      message: req.body.url
-    }
-    jobQueue.sendMessage(data, (err, qid) => {
-      if (err)
-        return res.status(500).json({error: {reason: err}})
+  let requestUrl = req.body.url
+  if (requestUrl) {
+    JobQueue.addToJobQueue({message: requestUrl}, (err, resp) => {
+      if (err) return errorHandler(err, res)
 
       let newJob = new db.Job ({
-        qid,
-        url: req.body.url,
+        qid: resp.qid,
+        url: requestUrl,
         created: getTimeString()
       })
       newJob.save((err, job) => {
-        if (err)
-          return res.status(500).json({error: {reason: err}})
+        if (err) return errorHandler(err, res)
 
         res.json({job_id: job.id})
       })
     })
   }
   else {
-    return res.status(400).json({error: {desc: "Fetch url is required."}})
+    res.status(400).json({error: {desc: "Fetch url is required."}})
   }
 }
 
 const update = (req, res) => {
   db.Job.findById(req.params.job_id, (err, foundJob) => {
-    if (err)
-      return res.status(500).json({error: {reason: err, desc: "Failed to find job to update."}})
+    if (err) return errorHandler(err, res)
 
-    if (foundJob) {
-      if (foundJob.status === Constants.JOBQUEUE_PENDING_STATUS ||
-          foundJob.status === Constants.JOBQUEUE_UPDATE_STATUS) {
-        return res.status(400).json({error: {desc: "This job is already in the queue."}})
-      }
+    if (!foundJob)
+      return res.status(400).json({error: {desc: "Job does not exist in database."}})
 
-      let requestUrl = req.body.url ? req.body.url : foundJob.url
-      let data = {
-        qname,
-        message: requestUrl
-      }
-      jobQueue.sendMessage(data, (err, qid) => {
-        if (err)
-          return res.status(500).json({error: {reason: err}})
+    if (foundJob.status === Constants.JOBQUEUE_PENDING_STATUS ||
+        foundJob.status === Constants.JOBQUEUE_UPDATE_STATUS) {
+      return res.status(400).json({error: {desc: "This job is already in the queue."}})
+    }
 
-        foundJob.qid = qid
-        foundJob.status = Constants.JOBQUEUE_UPDATE_STATUS
-        foundJob.url = requestUrl
-        foundJob.last_updated = getTimeString()
-        foundJob.content = undefined
-        foundJob.save((err, updatedJob) => {
-          if (err)
-            return res.status(500).json({error: {reason: err, desc: "Failed to update job."}})
+    let requestUrl = req.body.url ? req.body.url : foundJob.url
+    JobQueue.addToJobQueue({message: requestUrl}, (err, resp) => {
+      if (err) return errorHandler(err, res)
 
-          res.json({
-            status: updatedJob.status,
-            url: updatedJob.url,
-            created: updatedJob.created,
-            last_updated: updatedJob.last_updated
-          })
+      foundJob.qid = resp.qid
+      foundJob.status = Constants.JOBQUEUE_UPDATE_STATUS
+      foundJob.url = requestUrl
+      foundJob.last_updated = getTimeString()
+      foundJob.content = undefined
+      foundJob.save((err, updatedJob) => {
+        if (err) return errorHandler(err, res)
+
+        res.json({
+          status: updatedJob.status,
+          url: updatedJob.url,
+          created: updatedJob.created,
+          last_updated: updatedJob.last_updated
         })
       })
-    }
+    })
   })
 }
 
 const destroy = (req, res) => {
   db.Job.findByIdAndRemove(req.params.job_id, (err, removedJob) => {
-    if (err)
-      return res.status(500).json({error: {reason: err, desc: "Failed to delete job."}})
+    if (err) return errorHandler(err, res)
 
-    if (removedJob) {
-      jobQueue.deleteMessage({qname, id: removedJob.qid}, (err, resp) => {
-        if (resp === 1) {
-          console.log("Removed job "+removedJob.qid+" from jobQueue\n")
-        }
-      })
+    if (!removedJob)
+      return res.status(400).json({error: {desc: "Job does not exist in database."}})
+
+    JobQueue.removeFromJobQueue(removedJob.qid, (err, resp) => {
+      if (err) return errorHandler(err, res)
+
       res.json({success: true})
-    }
+    })
   })
 }
 
 const empty = (req, res) => {
-  destroyJobQueue()
-  createJobQueue()
-  db.Job.remove({}, (err, removedJobs) => {
-    if (err)
-      return res.status(500).json({error: {reason: err}})
+  JobQueue.destroyJobQueue((err, resp) => {
+    if (err) return errorHandler(err, res)
 
-    res.json(removedJobs)
+    db.Job.remove({}, (err, removedJobs) => {
+      if (err) return errorHandler(err, res)
+
+      JobQueue.createJobQueue((err, resp) => {
+        if (err) return errorHandler(err, res)
+
+        res.json(removedJobs)
+      })
+    })
   })
+}
+
+const errorHandler = (err, res) => {
+  return res.status(500).json({error: {reason: err}})
 }
 
 export const Job = {
