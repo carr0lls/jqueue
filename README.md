@@ -66,7 +66,7 @@ Delete all existing jobs (all jobs from the database and the job queue is delete
 
 ## Tests
 ```sh
-# Run tests
+# Run unit tests (Mocha, Chai, Sinon)
 npm test
 ```
 
