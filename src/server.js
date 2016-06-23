@@ -1,4 +1,3 @@
-import fs from 'fs'
 import path from 'path'
 import express from 'express'
 import bodyParser from 'body-parser'
@@ -8,7 +7,7 @@ import * as controllers from './controllers'
 const app = express()
 const handlebars = exphbr.create({extname: '.html'})
 
-app.set('port', (process.env.PORT || 4000))
+app.set('port', 4000)
 app.use('/', express.static(path.join(__dirname, '../public')))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))

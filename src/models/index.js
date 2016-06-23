@@ -1,4 +1,7 @@
 import mongoose from 'mongoose'
-mongoose.connect('mongodb://localhost/job-queue')
 
+export const connect = () => {
+  mongoose.connect('mongodb://localhost/job-queue')
+  console.log('Connected to database.')
+}
 export { Job } from './Job'
