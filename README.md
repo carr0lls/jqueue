@@ -4,8 +4,10 @@ A simple job queue with a RESTful API for retrieving and storing data from a spe
 
 ## Prerequisites
 These services must be installed and running prior to starting the server:
-- [Redis](http://redis.io/)
-- [MongoDB](https://www.mongodb.com/)
+- [Redis](http://redis.io/) 
+(brew install redis)
+- [MongoDB](https://www.mongodb.com/) 
+(brew install mongodb)
 
 ## To run
 
@@ -14,6 +16,9 @@ npm install
 
 # Transpile server-side files from ES6 to ES5
 npm run build
+
+# Start redis server
+redis-server
 
 # Start mongo server
 mongod
