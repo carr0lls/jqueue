@@ -3,6 +3,7 @@
 A simple job queue with a RESTful API for retrieving and storing data from a specified URL.
 
 ## Prerequisites
+These services most be installed and running prior to starting the server:
 - [Redis](http://redis.io/)
 - [MongoDB](https://www.mongodb.com/)
 
