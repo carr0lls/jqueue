@@ -1,6 +1,8 @@
+* {
+  box-sizing: border-box;  
+}
 body {
   font-family: sans-serif;
-  box-sizing: border-box;
 }
 h1 {
   font-family: 'Raleway', sans-serif;
@@ -32,11 +34,12 @@ a:hover {
   float: right;
 }
 .job-list {
-  text-align: left;
   display: inline-block;
   vertical-align: top;
   width: 310px;
   padding: 10px;
+  margin: 5px;
+  text-align: left;
   transition: background-color .2s ease-out 0s;
   -webkit-transition: background-color .2s ease-out 0s;
   transition-delay: .2s;
@@ -54,6 +57,26 @@ a:hover {
 .job-list.updating:hover {
   background: rgba(255, 235, 59, 0.3);
 }
+.job-list.completed li {
+  -webkit-animation: completed_blink 2s linear;
+  -moz-animation: completed_blink 2s linear;
+  animation: completed_blink 2s linear;
+}
+.job-list.pending li {
+  -webkit-animation: pending_blink 2s linear;
+  -moz-animation: pending_blink 2s linear;
+  animation: pending_blink 2s linear;
+}
+.job-list.failed li {
+  -webkit-animation: failed_blink 2s linear;
+  -moz-animation: failed_blink 2s linear;
+  animation: failed_blink 2s linear;
+}
+.job-list.updating li {
+  -webkit-animation: updating_blink 2s linear;
+  -moz-animation: updating_blink 2s linear;
+  animation: updating_blink 2s linear;
+}
 .job-list:hover {
   background: rgba(235, 238, 249, 1);
   border-radius: 2px;
@@ -62,8 +85,12 @@ a:hover {
   text-align: center;
   width: 100%;
 }
+.job-list ul {
+  padding-left: 0;
+}
 .job-list li {
-  margin: 5px 0;
+  padding: 5px 5px 5px 10px;
+  list-style: none;
 }
 .job-list button {
   float: right;
@@ -71,4 +98,45 @@ a:hover {
 }
 .clearfix {
   clear: both;
+}
+
+@keyframes completed_blink {  
+  0% { background: transparent; }
+  50% { background: rgba(154, 249, 136, 0.4); }
+  100% { background: transparent; }
+}
+@-webkit-keyframes completed_blink {
+  0% { background: transparent; }
+  50% { background: rgba(154, 249, 136, 0.4); }
+  100% { background: transparent; }
+}
+@keyframes pending_blink {  
+  0% { background: transparent; }
+  50% { background: rgba(136, 207, 249, 0.4); }
+  100% { background: transparent; }
+}
+@-webkit-keyframes pending_blink {
+  0% { background: transparent; }
+  50% { background: rgba(136, 207, 249, 0.4); }
+  100% { background: transparent; }
+}
+@keyframes failed_blink {  
+  0% { background: transparent; }
+  50% { background: rgba(247, 90, 90, 0.4); }
+  100% { background: transparent; }
+}
+@-webkit-keyframes failed_blink {
+  0% { background: transparent; }
+  50% { background: rgba(247, 90, 90, 0.4); }
+  100% { background: transparent; }
+}
+@keyframes updating_blink {  
+  0% { background: transparent; }
+  50% { background: rgba(255, 235, 59, 0.4); }
+  100% { background: transparent; }
+}
+@-webkit-keyframes updating_blink {
+  0% { background: transparent; }
+  50% { background: rgba(255, 235, 59, 0.4); }
+  100% { background: transparent; }
 }

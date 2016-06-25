@@ -148,16 +148,16 @@ import { JobList, JobForm } from '../../components'
 					<JobForm onSubmitJob={this.submitJob}/>
 					<section className="job-lists">
 						<JobList className="completed" jobs={this.jobs.completed} onUpdateJob={this.updateJob} onDeleteJob={this.deleteJob}>
-							<div className="job-list-title">COMPLETED</div>
+							<div className="job-list-title">Completed</div>
 						</JobList>
 						<JobList className="pending" jobs={this.jobs.pending} onUpdateJob={this.updateJob} onDeleteJob={this.deleteJob}>
-							<div className="job-list-title">PENDING</div>
+							<div className="job-list-title">Pending</div>
 						</JobList>
 						<JobList className="failed" jobs={this.jobs.failed} onUpdateJob={this.updateJob} onDeleteJob={this.deleteJob}>
-							<div className="job-list-title">FAILED</div>
+							<div className="job-list-title">Failed</div>
 						</JobList>
 						<JobList className="updating" jobs={this.jobs.updating} onUpdateJob={this.updateJob} onDeleteJob={this.deleteJob}>
-							<div className="job-list-title">UPDATING</div>
+							<div className="job-list-title">Updating</div>
 						</JobList>						
 						<div className="clearfix"></div>
 					</section>
