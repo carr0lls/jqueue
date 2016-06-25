@@ -12,6 +12,9 @@ a {
 a:hover {
   color: #a185dd;
 }
+.job-lists {
+  text-align: center;
+}
 .job-form {
   display: inline-block;
   width: 350px;
@@ -29,13 +32,27 @@ a:hover {
   float: right;
 }
 .job-list {
-  float: left;
+  text-align: left;
+  display: inline-block;
+  vertical-align: top;
   width: 310px;
   padding: 10px;
   transition: background-color .2s ease-out 0s;
   -webkit-transition: background-color .2s ease-out 0s;
   transition-delay: .2s;
   -webkit-transition-delay: .2s;
+}
+.job-list.completed:hover {
+  background: rgba(154, 249, 136, 0.3);
+}
+.job-list.pending:hover {
+  background: rgba(136, 207, 249, 0.3);
+}
+.job-list.failed:hover {
+  background: rgba(247, 90, 90, 0.3);
+}
+.job-list.updating:hover {
+  background: rgba(255, 235, 59, 0.3);
 }
 .job-list:hover {
   background: rgba(235, 238, 249, 1);

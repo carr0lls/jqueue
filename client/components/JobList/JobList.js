@@ -9,7 +9,7 @@ import { Job } from '..'
 								})
 
 			return (
-					<div className="job-list">
+					<div className={'job-list'+' '+this.props.className}>
 						{this.props.children}
 						<ul>
 							{jobNodes}

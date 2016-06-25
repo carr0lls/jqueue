@@ -146,17 +146,17 @@ import { JobList, JobForm } from '../../components'
 				<div className="jobs-list-pane">
 					<h1>Job Queue</h1>
 					<JobForm onSubmitJob={this.submitJob}/>
-					<section>
-						<JobList jobs={this.jobs.completed} onUpdateJob={this.updateJob} onDeleteJob={this.deleteJob}>
+					<section className="job-lists">
+						<JobList className="completed" jobs={this.jobs.completed} onUpdateJob={this.updateJob} onDeleteJob={this.deleteJob}>
 							<div className="job-list-title">COMPLETED</div>
 						</JobList>
-						<JobList jobs={this.jobs.pending} onUpdateJob={this.updateJob} onDeleteJob={this.deleteJob}>
+						<JobList className="pending" jobs={this.jobs.pending} onUpdateJob={this.updateJob} onDeleteJob={this.deleteJob}>
 							<div className="job-list-title">PENDING</div>
 						</JobList>
-						<JobList jobs={this.jobs.failed} onUpdateJob={this.updateJob} onDeleteJob={this.deleteJob}>
+						<JobList className="failed" jobs={this.jobs.failed} onUpdateJob={this.updateJob} onDeleteJob={this.deleteJob}>
 							<div className="job-list-title">FAILED</div>
 						</JobList>
-						<JobList jobs={this.jobs.updating} onUpdateJob={this.updateJob} onDeleteJob={this.deleteJob}>
+						<JobList className="updating" jobs={this.jobs.updating} onUpdateJob={this.updateJob} onDeleteJob={this.deleteJob}>
 							<div className="job-list-title">UPDATING</div>
 						</JobList>						
 						<div className="clearfix"></div>
