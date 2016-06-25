@@ -77,6 +77,9 @@ a:hover {
   -moz-animation: updating_blink 2s linear;
   animation: updating_blink 2s linear;
 }
+.job-list.updating .update {
+  display: none;
+}
 .job-list:hover {
   background: rgba(235, 238, 249, 1);
   border-radius: 2px;
