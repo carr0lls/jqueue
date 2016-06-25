@@ -3,21 +3,11 @@
 	<head>
 		<link href="http://fonts.googleapis.com/css?family=Raleway:100" rel="stylesheet" type="text/css">
 		<link href="css/styles.css" rel="stylesheet" type="text/css">
-		<script src="scripts/jquery.min.js"></script>
-		<script src="scripts/app.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react.js"></script>
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react-dom.js"></script>
 	</head>
 	<body>
-		<h1>Job Queue</h1>
-		<div>
-			<form id="add-form">
-				<label for="url">URL:</label>
-				<input type="text" class="url" name="url"/>
-				<input type="submit" class="add" value="Add"/>
-			</form>
-		</div>
-		<section>
-			<ul class="job-list"></ul>
-			<button class="delete-all">DELETE ALL</button>
-		</section>
+		<div id="content"></div>
+		<script src="scripts/app.js"></script>
 	</body>
 </html>

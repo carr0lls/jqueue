@@ -1,5 +1,6 @@
 body {
   font-family: sans-serif;
+  box-sizing: border-box;
 }
 h1 {
   font-family: 'Raleway', sans-serif;
@@ -11,8 +12,38 @@ a {
 a:hover {
   color: #a185dd;
 }
+.job-form {
+  display: inline-block;
+  width: 350px;
+  margin-bottom: 10px;
+}
+.job-form #add-form {
+  float: left;
+  margin-left: 10px;
+}
+.job-form #add-form label,
+.job-form #add-form input {
+  margin-right: 5px;
+}
+.job-form .delete-all {
+  float: right;
+}
 .job-list {
-  width: 300px;
+  float: left;
+  width: 310px;
+  padding: 10px;
+  transition: background-color .2s ease-out 0s;
+  -webkit-transition: background-color .2s ease-out 0s;
+  transition-delay: .2s;
+  -webkit-transition-delay: .2s;
+}
+.job-list:hover {
+  background: rgba(235, 238, 249, 1);
+  border-radius: 2px;
+}
+.job-list-title {
+  text-align: center;
+  width: 100%;
 }
 .job-list li {
   margin: 5px 0;
@@ -20,4 +51,7 @@ a:hover {
 .job-list button {
   float: right;
   margin: 0 5px;
+}
+.clearfix {
+  clear: both;
 }
