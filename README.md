@@ -27,7 +27,7 @@ mongod
 npm start
 ```
 
-And visit <http://localhost:4000/>.
+And visit <http://localhost:4000/> to access GUI.
 
 ## Routes
 ### `GET` /
@@ -75,6 +75,3 @@ Delete all existing jobs (all jobs from the database and the job queue is delete
 # Run unit tests (Mocha, Chai, Sinon)
 npm test
 ```
-
-## Todo (future enhancements)
-- Rewrite frontend UI with React
