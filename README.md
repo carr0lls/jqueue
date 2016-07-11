@@ -14,7 +14,7 @@ These services must be installed and running prior to starting the server:
 ```sh
 npm install
 
-# Transpile server-side files from ES6 to ES5
+# Transpile and bundle client, server, and test files
 npm run build
 
 # Start redis server
