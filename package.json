@@ -2,15 +2,15 @@
   "name": "job-queue",
   "version": "1.0.0",
   "description": "Job queue",
-  "main": "dist/server.js",
+  "main": "server.bundle.js",
   "scripts": {
     "test": "mocha dist/test/test.js",
     "build": "npm run build:client && npm run build:server",
     "build:client": "webpack",
-    "build:server": "babel src -d dist",
+    "build:server": "webpack --config webpack.server.config.js",
     "watch:client": "webpack -w",
-    "watch:server": "babel -w src -d dist",
-    "start": "node ./dist/server.js"
+    "watch:server": "webpack -w --config webpack.server.config.js",
+    "start": "node ./server.bundle.js"
   },
   "author": "Carroll Yu",
   "license": "ISC",

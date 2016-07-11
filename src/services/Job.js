@@ -16,11 +16,11 @@ export class Job {
     this.runWorkers()
   }
   // Route services
-  fetchAllJobs(res) {
+  fetchAllJobs(cb) {
     this.db.Job.find({}, (err, foundJobs) => {
       if (err) return this.errorHandler(err, res)
-
-      res.json(foundJobs)
+      
+      cb(null, foundJobs)
     })
   }
   fetchJob(job_id, res) {
@@ -158,7 +158,7 @@ export class Job {
               data = {
                 status: Constants.JOBQUEUE_COMPLETE_STATUS,
                 last_updated: getTimeString(),
-                content: result.text
+                content: result.text.replace(/(<([^>]+)>)/ig,"")
               }
               console.log("Completed fetching data for "+ qid +".")
             }

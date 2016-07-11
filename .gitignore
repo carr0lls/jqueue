@@ -2,3 +2,4 @@
 /dist
 .DS_Store
 /public/scripts/app.js
+server.bundle.js

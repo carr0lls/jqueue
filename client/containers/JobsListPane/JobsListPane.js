@@ -1,4 +1,4 @@
-// import React from 'react'
+import React from 'react'
 import 'whatwg-fetch'
 import { JobList, JobForm } from '../../components'
 
@@ -6,11 +6,11 @@ import { JobList, JobForm } from '../../components'
 		constructor(props) {
 			super(props)
 			this.state = {
-				jobs: []
+				jobs: props.containerData.jobs
 			}
 			this.api = {
-				url: props.url, 
-				refresh: props.pollInterval
+				url: props.containerData.url, 
+				refresh: props.containerData.pollInterval
 			}
 
 			this.renderJobs = this.renderJobs.bind(this)

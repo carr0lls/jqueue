@@ -1,4 +1,4 @@
-// import React from 'react'
+import React from 'react'
 import { Job } from '..'
 
 	export default class JobList extends React.Component {
