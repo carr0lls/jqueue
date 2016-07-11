@@ -8,7 +8,7 @@ import { Constants } from '../constants'
 const JobService = new Services.Job(db, JobQueue)
 
 const index = (req, res) => {
-  JobService.fetchAllJobs((err, data) => {
+  JobService.fetchAllJobs((data) => {
     let containerData = {
       jobs: data,
       url: Constants.API_FETCH_URL,
@@ -21,7 +21,9 @@ const index = (req, res) => {
 }
 
 const list = (req, res) => {
-  JobService.fetchAllJobs(res)
+  JobService.fetchAllJobs((data) => {
+    res.json(data)
+  })
 }
 
 const show = (req, res) => {

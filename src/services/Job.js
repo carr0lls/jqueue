@@ -20,7 +20,7 @@ export class Job {
     this.db.Job.find({}, (err, foundJobs) => {
       if (err) return this.errorHandler(err, res)
       
-      cb(null, foundJobs)
+      cb(foundJobs)
     })
   }
   fetchJob(job_id, res) {

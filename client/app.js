@@ -1,5 +1,7 @@
-// import React from 'react'
-// import ReactDOM from 'react-dom'
-// import { JobsListPane } from './containers'
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { JobsListPane } from './containers'
 
-	// ReactDOM.render(<JobsListPane url="/api/jobs" pollInterval={1000} />, content)
+	const containerData = window.APP_PROPS;
+
+	ReactDOM.render(<JobsListPane containerData={containerData} />, content)
