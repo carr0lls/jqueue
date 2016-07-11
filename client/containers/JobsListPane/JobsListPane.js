@@ -135,7 +135,7 @@ import { JobList, JobForm } from '../../components'
 		}
 
 		componentDidMount() {
-			this.renderJobs()			
+			this.renderJobs()
 			setInterval(this.renderJobs, this.api.refresh)
 		}
 

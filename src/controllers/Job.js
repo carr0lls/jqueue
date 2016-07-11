@@ -4,14 +4,15 @@ import Html from '../../client/helpers/Html'
 import * as Services from '../services'
 import * as db from '../models'
 import { JobQueue } from '../helpers'
+import { Constants } from '../constants'
 const JobService = new Services.Job(db, JobQueue)
 
 const index = (req, res) => {
   JobService.fetchAllJobs((err, data) => {
     let containerData = {
       jobs: data,
-      url: '/api/jobs',
-      pollInterval: 1000
+      url: Constants.API_FETCH_URL,
+      pollInterval: Constants.API_REFRESH_INTERVAL
     }
     let html = ReactDOMServer.renderToStaticMarkup(<Html containerData={containerData} />)
 
