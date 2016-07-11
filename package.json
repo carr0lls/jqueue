@@ -4,10 +4,11 @@
   "description": "Job queue",
   "main": "server.bundle.js",
   "scripts": {
-    "test": "mocha dist/test/test.js",
-    "build": "npm run build:client && npm run build:server",
+    "test": "mocha test.js",
+    "build": "npm run build:client && npm run build:server && npm run build:test",
     "build:client": "webpack",
     "build:server": "webpack --config webpack.server.config.js",
+    "build:test": "babel server/test/test.js -o test.js",
     "watch:client": "webpack -w",
     "watch:server": "webpack -w --config webpack.server.config.js",
     "start": "node ./server.bundle.js"

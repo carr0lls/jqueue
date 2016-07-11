@@ -17,7 +17,7 @@ import { JobsListPane } from '../containers'
               <JobsListPane containerData={this.props.containerData} />
             </div>
             <script dangerouslySetInnerHTML={{__html: stringData}}></script>
-            <script type="text/javascript" src="scripts/app.js"></script>
+            <script type="text/javascript" src="scripts/app.bundle.js"></script>
           </body>
         </html>
       )
