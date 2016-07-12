@@ -2,4 +2,4 @@
 /public/scripts/app.bundle.js
 .DS_Store
 /server.bundle.js
-/test.js
+/server.test.bundle.js
