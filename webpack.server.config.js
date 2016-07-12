@@ -2,10 +2,10 @@ var fs = require('fs')
 var path = require('path')
 
 module.exports = {
-  entry: './server/server.js',
+  entry: './server/index.js',
 
   output: {
-    filename: 'server.bundle.js'
+    filename: 'server.js'
   },
 
   target: 'node',

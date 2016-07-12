@@ -5,7 +5,7 @@ module.exports = {
   entry: './server/test/test.js',
 
   output: {
-    filename: 'server.test.bundle.js'
+    filename: 'server.test.js'
   },
 
   target: 'node',

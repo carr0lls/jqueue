@@ -1,5 +1,5 @@
 /node_modules
 .DS_Store
-/public/scripts/app.bundle.js
-/server.bundle.js
-/server.test.bundle.js
+/public/scripts/app.js
+/server.js
+/server.test.js
