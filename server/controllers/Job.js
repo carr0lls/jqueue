@@ -8,7 +8,7 @@ import { Constants } from '../constants'
 const JobService = new Services.Job(db, JobQueue)
 
 const index = (req, res) => {
-  JobService.fetchAllJobs((data) => {
+  JobService.fetchAllJobs((err, data) => {
     let containerData = {
       jobs: data,
       url: Constants.API_FETCH_URL,
@@ -20,30 +20,57 @@ const index = (req, res) => {
   })
 }
 
+// Error handlers
+const errorHandler = (err, res) => {
+  return res.status(err.code).json({error: err.error})
+}
+
 const list = (req, res) => {
-  JobService.fetchAllJobs((data) => {
+  JobService.fetchAllJobs((err, data) => {
+    if (err) return errorHandler(err, res)
+
     res.json(data)
   })
 }
 
 const show = (req, res) => {
-  JobService.fetchJob(req.params.job_id, res)
+  JobService.fetchJob(req.params.job_id, (err, data) => {
+    if (err) return errorHandler(err, res)
+
+    res.json(data)
+  })
 }
 
 const create = (req, res) => {
-  JobService.addJob(req.body.url, res)
+  JobService.addJob(req.body.url, (err, data) => {
+    if (err) return errorHandler(err, res)
+
+    res.json(data)
+  })
 }
 
 const update = (req, res) => {
-  JobService.updateJob(req.params.job_id, req.body.url, res)
+  JobService.updateJob(req.params.job_id, req.body.url, (err, data) => {
+    if (err) return errorHandler(err, res)
+
+    res.json(data)
+  })
 }
 
 const destroy = (req, res) => {
-  JobService.deleteJob(req.params.job_id, res)
+  JobService.deleteJob(req.params.job_id, (err, data) => {
+    if (err) return errorHandler(err, res)
+
+    res.json(data)
+  })
 }
 
 const empty = (req, res) => {
-  JobService.deleteAllJobs(res)
+  JobService.deleteAllJobs((err, data) => {
+    if (err) return errorHandler(err, res)
+
+    res.json(data)
+  })
 }
 
 export const Job = {

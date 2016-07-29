@@ -18,19 +18,19 @@ export class Job {
   // Route services
   fetchAllJobs(cb) {
     this.db.Job.find({}, (err, foundJobs) => {
-      if (err) return this.errorHandler(err, res)
+      if (err) return cb(this.errorHandler(err), null)
       
-      cb(foundJobs)
+      cb(null, foundJobs)
     })
   }
-  fetchJob(job_id, res) {
+  fetchJob(job_id, cb) {
     this.db.Job.findById(job_id, (err, foundJob) => {
-      if (err) return this.errorHandler(err, res)
+      if (err) return cb(this.errorHandler(err), null)
 
       if (!foundJob)
-        return res.status(400).json({error: {desc: "Job does not exist in database."}})
+        return cb(this.badRequestHandler("Job does not exist in database."), null)
 
-      res.json({
+      cb(null, {
         _id: foundJob._id,
         status: foundJob.status,
         qid: foundJob.qid,
@@ -41,10 +41,10 @@ export class Job {
       })
     })
   }
-  addJob(requestUrl, res) {
+  addJob(requestUrl, cb) {
     if (requestUrl) {
       this.JobQueue.addToJobQueue({message: requestUrl}, (err, resp) => {
-        if (err) return this.errorHandler(err, res)
+        if (err) return cb(this.errorHandler(err), null)
 
         let newJob = new this.db.Job ({
           qid: resp.qid,
@@ -52,31 +52,31 @@ export class Job {
           created: getTimeString()
         })
         newJob.save((err, job) => {
-          if (err) return this.errorHandler(err, res)
+          if (err) return cb(this.errorHandler(err), null)
 
-          res.json({job_id: job.id})
+          cb(null, {job_id: job.id})
         })
       })
     }
     else {
-      res.status(400).json({error: {desc: "Fetch url is required."}})
+      cb(this.badRequestHandler("Fetch url is required."), null)
     }
   }
-  updateJob(job_id, requestUrl, res) {
+  updateJob(job_id, requestUrl, cb) {
     this.db.Job.findById(job_id, (err, foundJob) => {
-      if (err) return this.errorHandler(err, res)
+      if (err) return cb(this.errorHandler(err), null)
 
       if (!foundJob)
-        return res.status(400).json({error: {desc: "Job does not exist in database."}})
+        return cb(this.badRequestHandler("Job does not exist in database."), null)
 
       if (foundJob.status === Constants.JOBQUEUE_PENDING_STATUS ||
           foundJob.status === Constants.JOBQUEUE_UPDATE_STATUS) {
-        return res.status(400).json({error: {desc: "This job is already in the queue."}})
+        return cb(this.badRequestHandler("This job is already in the queue."), null)
       }
 
       let url = requestUrl ? requestUrl : foundJob.url
       this.JobQueue.addToJobQueue({message: url}, (err, resp) => {
-        if (err) return this.errorHandler(err, res)
+        if (err) return cb(this.errorHandler(err), null)
 
         let data = {
           qid: resp.qid,
@@ -87,9 +87,9 @@ export class Job {
         }
         foundJob = Object.assign(foundJob, data)
         foundJob.save((err, updatedJob) => {
-          if (err) return this.errorHandler(err, res)
+          if (err) return cb(this.errorHandler(err), null)
 
-          res.json({
+          cb(null, {
             status: updatedJob.status,
             url: updatedJob.url,
             created: updatedJob.created,
@@ -99,42 +99,45 @@ export class Job {
       })
     })
   }
-  deleteJob(job_id, res) {
+  deleteJob(job_id, cb) {
     this.db.Job.findById(job_id, (err, foundJob) => {
-      if (err) return this.errorHandler(err, res)
+      if (err) return cb(this.errorHandler(err), null)
 
       if (!foundJob)
-        return res.status(400).json({error: {desc: "Job does not exist in database."}})
+        return cb(this.badRequestHandler("Job does not exist in database."), null)
 
       this.JobQueue.removeFromJobQueue(foundJob.qid, (err, resp) => {
-        if (err) return this.errorHandler(err, res)
+        if (err) return cb(this.errorHandler(err), null)
 
         foundJob.remove((err, removedJob) => {
-          if (err) return this.errorHandler(err, res)
+          if (err) return cb(this.errorHandler(err), null)
 
-          res.json({success: {url: removedJob.url}})
+          cb(null, {success: {url: removedJob.url}})
         })
       })
     })
   }
-  deleteAllJobs(res) {
+  deleteAllJobs(cb) {
     this.JobQueue.destroyJobQueue((err, resp) => {
-      if (err) return this.errorHandler(err, res)
+      if (err) return cb(this.errorHandler(err), null)
 
       this.db.Job.remove({}, (err, removedJobs) => {
-        if (err) return this.errorHandler(err, res)
+        if (err) return cb(this.errorHandler(err), null)
 
         this.JobQueue.createJobQueue((err, resp) => {
-          if (err) return this.errorHandler(err, res)
+          if (err) return cb(this.errorHandler(err), null)
 
-          res.json(removedJobs)
+          cb(null, removedJobs)
         })
       })
     })
   }
   // Error handlers
-  errorHandler(err, res) {
-    return res.status(500).json({error: {reason: err}})
+  errorHandler(err) {
+    return {error: {reason: err}, code: 500}
+  }
+  badRequestHandler(err) {
+    return {error: {desc: err}, code: 400}
   }
   // Job queue workers
   runJob(qid) {
